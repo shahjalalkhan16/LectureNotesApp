@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D2F7E974"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -12,22 +13,14 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/design_default_color_background"
+
         android:gravity="center_horizontal"
         android:text="Lecture Notes"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@color/black"
         android:textSize="30sp"
         android:padding="16dp"/>
 
     <!-- Adding a ListView -->
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="16dp"
-        android:padding="16dp"
-        android:background="@color/black"/>
 
     <!-- Adding a FloatingActionButton for adding new notes -->
 <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
@@ -38,26 +31,54 @@
 <!--        android:layout_margin="16dp"-->
 <!--        app:labelText="Add"-->
 <!--        android:src="@drawable/ic_add2" />-->
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:background="@color/black"
+        android:padding="16dp" />
+
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_margin="16dp">
+        android:layout_margin="6dp"
+        >
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addNoteButton"
-            android:layout_width="wrap_content"
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:text="Add"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="12sp" />-->
+        <!-- ... Your existing layout ... -->
+        <ActionMenuView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add2" />
+            tools:targetApi="lollipop">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="4dp"
-            android:text="Add"
-            android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            <Button
+                android:id="@+id/takePictureButton"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:layout_margin="16dp"
+                android:layout_marginLeft="5dp"
+                android:text="Take Picture"
+                android:textSize="10sp"
+                 />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addNoteButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_add2" />
+
+        </ActionMenuView>
 
     </FrameLayout>
 
