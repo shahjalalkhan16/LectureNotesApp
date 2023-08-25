@@ -1,12 +1,12 @@
 package com.example.lecturenotesapp;
 
 public class Note {
-    private String text;
     private String title;
+    private String text;
 
     public Note(String text, String title) {
-        this.text = text;
         this.title = title;
+        this.text = text;
     }
 
     public String getText() {

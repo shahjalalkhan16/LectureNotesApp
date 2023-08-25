@@ -1,13 +1,17 @@
 package com.example.lecturenotesapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,13 +19,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.FileProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,13 +38,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.IllegalFormatWidthException;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int REQUEST_IMAGE_CAPTURE = 101;
     static ArrayList<String> notes = new ArrayList<>();
     static ArrayAdapter<String> arrayAdapter;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private static final int CAMERA_REQUEST_CODE = 101;
+    private ImageView imageView;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -132,48 +143,58 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+//    private void openCamera() {
+//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+//        }
+//    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            if (extras != null) {
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-                // Save the image as a file and get its file path
-                String imagePath = saveImageToInternalStorage(imageBitmap);
-
-                // Create a note with the image's file path
-                String imageNote = "Image: " + imagePath;
-                String currentDate = DateFormat.getDateTimeInstance().format(new Date());
-                String combinedNote = imageNote + "\n\nLast Edited: " + currentDate;
-                notes.add(combinedNote);
-                arrayAdapter.notifyDataSetChanged();
-
-                // Store the updated notes in SharedPreferences
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.notes", Context.MODE_PRIVATE);
-                HashSet<String> set = new HashSet<>(MainActivity.notes);
-                sharedPreferences.edit().putStringSet("notes", set).apply();
-            }
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+            Intent intent = new Intent(this, AddPicturesByCamera.class);
+            intent.putExtra("imageBitmap", imageBitmap);
+            startActivity(intent);
         }
     }
-
-    private String saveImageToInternalStorage(Bitmap imageBitmap) {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + ".jpg";
-
-       // File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File storageDir = getApplicationContext().getFilesDir();
-        File imageFile = new File(storageDir, imageFileName);
-
-        try (FileOutputStream outStream = new FileOutputStream(imageFile)) {
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-            outStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return imageFile.getAbsolutePath();
-    }
-
 }
+
+
+
+//    /*@Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+//            Bundle extras = data.getExtras();
+//            if (extras != null) {
+//                Bitmap imageBitmap = (Bitmap) extras.get("data");
+//
+//                // Convert the image bitmap to a Base64-encoded string
+//                String imageString = encodeImageToBase64(imageBitmap);
+//
+//                // Create a note with the Base64-encoded image string
+//                String imageNote = "Image: " + imageString;
+//                String currentDate = DateFormat.getDateTimeInstance().format(new Date());
+//                String combinedNote = imageNote + "\n\nLast Edited: " + currentDate;
+//                notes.add(combinedNote);
+//                arrayAdapter.notifyDataSetChanged();
+//
+//                // Store the updated notes in SharedPreferences
+//                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.notes", Context.MODE_PRIVATE);
+//                HashSet<String> set = new HashSet<>(MainActivity.notes);
+//                sharedPreferences.edit().putStringSet("notes", set).apply();
+//            }
+//        }
+//    }
+//
+//    private String encodeImageToBase64(Bitmap imageBitmap) {
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+//        byte[] byteArray = byteArrayOutputStream.toByteArray();
+//        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+//    }*/
+
+

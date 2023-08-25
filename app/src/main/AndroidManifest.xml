@@ -1,12 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.lecturenotesapp">
-
     <!-- Permissions and features should be inside the <manifest> tag -->
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" -->
+    <!-- android:maxSdkVersion="28" /> -->
+    <!-- <uses-feature android:name="android.hardware.camera" -->
+    <!-- android:required="true" /> -->
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +26,14 @@
         android:theme="@style/Theme.LectureNotesApp"
         tools:targetApi="31">
         <activity
+            android:name=".AddPicturesByCamera"
+            android:exported="false" />
+        <!-- <activity -->
+        <!-- android:name=".AddPictureByCamera" -->
+        <!-- android:exported="false" -->
+        <!-- android:label="@string/title_activity_add_picture_by_camera" -->
+        <!-- android:theme="@style/Theme.LectureNotesApp" /> -->
+        <activity
             android:name=".NoteEditorActivity"
             android:exported="false" />
         <activity
@@ -26,9 +41,20 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
