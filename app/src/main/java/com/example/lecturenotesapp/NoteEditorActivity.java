@@ -124,7 +124,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         String editedTitle = lectureTitleEditText.getText().toString();
         String editedText = editText.getText().toString();
         String currentDate = DateFormat.getDateTimeInstance().format(new Date()); // Get current date and time
-        String combinedNote = editedTitle  + "\n\n" + editedText + " \n\nLast Edited: " + currentDate;
+        String combinedNote = editedTitle  + "\n" + editedText + " \n\nLast Edited: " + currentDate;
 
         MainActivity.notes.set(noteId, combinedNote);
         MainActivity.arrayAdapter.notifyDataSetChanged();
