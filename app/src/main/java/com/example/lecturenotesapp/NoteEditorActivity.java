@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.widget.EditText;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +21,6 @@ public class NoteEditorActivity extends AppCompatActivity {
 
     EditText lectureTitleEditText; // Declare the EditText
     Button saveButton; // Declare the Button
-
     int noteId;
     EditText editText;
 
@@ -36,42 +35,24 @@ public class NoteEditorActivity extends AppCompatActivity {
 
         // Fetch data that is passed from MainActivity
         Intent intent = getIntent();
-
-        // Accessing the data using key and value
+// Accessing the data using key and value
         noteId = intent.getIntExtra("noteId", -1);
-//        if (noteId != -1) {
-//            editText.setText(MainActivity.notes.get(noteId));
-//        } else {
-//            MainActivity.notes.add("");
-//            noteId = MainActivity.notes.size() - 1;
-//            MainActivity.arrayAdapter.notifyDataSetChanged();
-//        }
-
-        /*if (noteId != -1) {
-            // Retrieve the note content and lecture title
-            String[] noteData = MainActivity.notes.get(noteId).split("\n", 2);
-            lectureTitleEditText.setText(noteData[0]);
-            editText.setText(noteData[1]);
-        } else {
-            MainActivity.notes.add("\n"); // Start with a newline for separation
-            noteId = MainActivity.notes.size() - 1;
-            MainActivity.arrayAdapter.notifyDataSetChanged();
-        } */
         if (noteId != -1) {
-            String[] noteData = MainActivity.notes.get(noteId).split("\n", 3);
-            if (noteData.length == 3) {
+            String[] noteData = MainActivity.notes.get(noteId).split("\n", 2);
+            if (noteData.length == 2) {
                 lectureTitleEditText.setText(noteData[0]);
-                editText.setText(noteData[2]);
+                editText.setText(noteData[1]);
             }
         } else {
             MainActivity.notes.add("");
             noteId = MainActivity.notes.size() - 1;
             MainActivity.arrayAdapter.notifyDataSetChanged();
         }
+
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // add your code here
+
             }
 
             @Override
@@ -89,7 +70,6 @@ public class NoteEditorActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                // add your code here
             }
         });
 
